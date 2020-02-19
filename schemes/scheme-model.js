@@ -6,7 +6,8 @@ module.exports = {
     findSteps,
     add,
     update,
-    remove
+    remove,
+    addStep
 }
 // find():
 // Calling find returns a promise that resolves to an array of all schemes in the database.
@@ -29,10 +30,10 @@ function findById(id) {
 // Resolves to an array of all correctly ordered step for the given scheme: [ { id: 17, scheme_name: 'Find the Holy Grail', step_number: 1, instructions: 'quest'}, { id: 18, scheme_name: 'Find the Holy Grail', step_number: 2, instructions: '...and quest'}, etc. ].
 // This array should include the scheme_name not the scheme_id.
 function findSteps(id) {
-    return db('schemes as s')
-    .join('steps as st', 's.id', 'st.scheme_id')
-    .select('st.id', 's.scheme_name', 'st.step_number', 'st.instructions')
-    .where('s.id', id)
+    return db('schemes as sc')
+    .join('steps as st', 'sc.id', 'st.scheme_id')
+    .select('st.id', 'sc.scheme_name', 'st.step_number', 'st.instructions')
+    .where('sc.id', id)
     .orderBy('st.step_number')
 }
 
@@ -50,7 +51,11 @@ function add(scheme) {
 // addStep(step, scheme_id): This method expects a step object and a scheme id. It inserts the new step into the database, correctly linking it to the intended scheme.
 // You may use POST /api/schemes/:id/addStep to test this method.
 
-function addStep(step, id) {}
+function addStep(step, scheme_id) {
+    newStep = {...step, scheme_id}
+    return db('steps')
+    .insert(newStep)
+}
 
 // update(changes, id):
 // Expects a changes object and an id.

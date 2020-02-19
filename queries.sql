@@ -29,3 +29,24 @@ SELECT o.Id
 FROM [Order] as o
 INNER JOIN Customer as c ON o.customerId = c.Id
 INNER JOIN Employee as e ON o.employeeId = e.Id
+
+-- STRETCH PROBLEMS
+-- In SQL Try Editor at W3Schools.com:
+-- Displays CategoryName and a new column called Count that shows how many products are in each category. Shows 8 records.
+SELECT c.CategoryName,
+COUNT(c.CategoryName) as Count
+FROM Categories AS c
+JOIN Products AS p ON c.CategoryId = p.CategoryId
+GROUP BY p.CategoryID
+
+-- Display OrderID and a column called ItemCount that shows the total number of products placed on the order. Shows 196 records.
+SELECT od.orderId,
+COUNT(od.productId) as ItemCount
+FROM Orderdetails AS od
+
+-- The solution below works as well
+-- GROUP BY od.orderId
+-- SELECT od.orderId,
+-- COUNT(*) as ItemCount
+-- FROM Orderdetails AS od
+-- GROUP BY od.orderId
